@@ -1,43 +1,54 @@
 ﻿class Program
 {
+    private static int x;
+
     static void Main(string[] args)
     {
-        Console.WriteLine("Занятие 1: Логические операции");
-
+        Console.WriteLine("Task 1: Logical operations");
+        Console.WriteLine("");
+        
+        Console.WriteLine("Enter the first number:");
         if (!int.TryParse(Console.ReadLine(), out int a))
         {
-            Console.WriteLine("Ошибка: это не число!");
+            Console.WriteLine("Error: this is not a number!");
             return;
         }
+
+        Console.WriteLine("Enter the second number:");
         if (!int.TryParse(Console.ReadLine(), out int b))
         {
-            Console.WriteLine("Ошибка: это не число!");
+            Console.WriteLine("Error: this is not a number!");
             return;
         }
 
-        var s = Console.ReadLine();
+        Console.WriteLine("");
+        Console.WriteLine("Enter the operator &, |, or ^:");
 
-        switch (s[0])
+        char.TryParse(Console.ReadLine(), out char ch);
+        
+        // Console.ReadLine();
+
+        switch (ch)
         {
             case '&':
-                Console.WriteLine("Результат {0} & {1} = {2}", a, b, a & b);
-                Console.WriteLine(Convert.ToString(a & b, 2));
-                Console.WriteLine(Convert.ToString(a & b, 16));
+                x = a & b;
                 break;
             case '|':
-                Console.WriteLine("Результат {0} | {1} = {2}", a, b, a | b);
-                Console.WriteLine(Convert.ToString(a | b, 2));
-                Console.WriteLine(Convert.ToString(a | b, 16));
+                x = a | b;
                 break;
             case '^':
-                Console.WriteLine("Результат {0} ^ {1} = {2}", a, b, a ^ b);
-                Console.WriteLine(Convert.ToString(a ^ b, 2));
-                Console.WriteLine(Convert.ToString(a ^ b, 16));
+                x = a | b;
                 break;
             default:
-                Console.WriteLine("Неверный символ");
+                Console.WriteLine("Error: invalid operator!");
                 break;
         }
+        Console.WriteLine("Result Decimal form:");
+        Console.WriteLine(Convert.ToString(x));
+        Console.WriteLine("Binary form:");
+        Console.WriteLine(Convert.ToString(x, 2));
+        Console.WriteLine("Hexadecimal form:");
+        Console.WriteLine(Convert.ToString(x, 16));
     }
 }
 
