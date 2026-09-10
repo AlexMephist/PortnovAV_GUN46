@@ -12,22 +12,32 @@ namespace MyApp1_Classes
         private int _damage;
 
 
-        // свойства
+        // свойства и конструкторы
 
         public string Name { get; }
 
         public float Health => _health;
 
-        public int Damage => _damage;
-
-        public float Armor 
-        { 
-            get => (_armor); set => _armor = value;  
+        public int Damage
+        {
+            get 
+            {
+                return 5;
+            }
         }
         
-          
-        
-        // конструкторы
+
+        public float Armor
+        {
+            get
+            {
+                return 0.6f;
+            }
+        }
+         
+             
+              
+        // методы
 
         public Unit(): this(name: "Unknown Unit") 
         { 
@@ -40,16 +50,14 @@ namespace MyApp1_Classes
 
         public float GetRealHealth()
         { 
-            Armor = 0.6f;
             return Health * (1f + Armor);
         }
 
-        public bool SetDamage(float Health, float Armor, float value)
+        public bool SetDamage(float value)
         {
-            _damage = 5;
-            Health = Health - value * Armor;
-            _health = Health;
-
+            
+            _health = _health - value * Armor;
+            
             if (Health <= 0f)
             {
                 return true;
