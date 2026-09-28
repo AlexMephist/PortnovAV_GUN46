@@ -4,63 +4,54 @@ namespace HomeWork_Strings
 {
     internal class Program
     {
-        private static readonly string[]? stringsArray;
-        private static int IntCountStrings;
-        private static string[] strs;
+       
 
-        // public static string? String1 { get; private set; }
-        // public static string? String2 { get; private set; }
-
-        public static void ConcatenateStrings(string string1, string string2)
-
+        public static string ConcatenateStrings(string string1, string string2)
         {
-            Console.WriteLine(string1 + string2);
-        }
-
-        public static void GreetUser(string name, int age)
-
-        {
-            Console.WriteLine($"Hello, {name}!\nYou are {age} years old");
-        }
-
-        public static void CounterChars(string text)
-
-        {
-            int uppCount = text.Count(Char.IsUpper);
-            int lowCount = text.Count(Char.IsLower);
-
-            Console.WriteLine($"The number of characters in the string {text} in uppercase: {uppCount}");
-            Console.WriteLine($"The number of characters in the string {text} in lowercase: {lowCount}");
+            return string1 + string2;
 
         }
 
-        public static void SymbolsofSubstr(string text)
+
+        public static string GreetUser(string name, int age) => $"Hello, {name}!\nYou are {age} years old.";
+
+        
+        public static string CounterChars(string text)
+
+        {
+           
+           return text.Length.ToString();
+           
+        }
+
+        public static string GetFirstFiveChars(string text)
 
         {
             text = text.Substring(0, 5);
-            Console.WriteLine(text);
-
+            return text;
         }
 
-        public static void SentenceBuilder(string[] arraystrings)
+        public static string SentenceBuilder(string[] arraystrings)
 
         {
             StringBuilder sentencebuilder = new();
 
             for (int i = 0; i < arraystrings.Length; i++)
             {
-                sentencebuilder.Append(arraystrings[i] + " ");
+                sentencebuilder.Append(arraystrings[i]).Append(" ");
             }
-            Console.WriteLine(sentencebuilder.ToString());
+            // Console.WriteLine(sentencebuilder.ToString());
+
+            return sentencebuilder.ToString();
         }
 
-        public static void ChangeWord(string str1, string str2, string str3)
+        public static string ReplaceWords(string input, string wordToReplace, string replacementWord) 
 
         {
             
-            string original = str1;
-            string modified = original.Replace(str2, str3);
-            Console.WriteLine(modified);
+            string original = input;
+            string modified = original.Replace(wordToReplace, replacementWord);
+            return modified;
 
         }
 
@@ -71,13 +62,13 @@ namespace HomeWork_Strings
             Console.WriteLine("Task1");
 
             Console.WriteLine("Input the first string:");
-            string? String1 = Console.ReadLine();
+            string? first = Console.ReadLine();
             Console.WriteLine("Input the second string:");
-            string? String2 = Console.ReadLine();
-
-            if (String1 != null && String2 != null)
+            string? second = Console.ReadLine();
+            if (first != null && second != null)
             {
-                ConcatenateStrings(String1, String2);
+                string result = ConcatenateStrings(first, second);
+                Console.WriteLine(result);
             }
 
             Console.WriteLine();
@@ -89,11 +80,11 @@ namespace HomeWork_Strings
             string? Name = Console.ReadLine();
             Console.WriteLine("Enter age:");
             int Age = Convert.ToInt32(Console.ReadLine());
-
-            if (Name != null)
+            
+            if (Age > 0 && Name != null)
             {
-                // int IntAge = Convert.ToInt32(Age);
-                GreetUser(Name, Age);
+             
+                Console.WriteLine(GreetUser(Name, Age));
             }
 
             Console.WriteLine();
@@ -107,7 +98,9 @@ namespace HomeWork_Strings
 
             if (Text != null)
             {
-                CounterChars(Text);
+                Console.WriteLine("In the original string of characters:" + CounterChars(Text));
+                Console.WriteLine(Text.ToUpper());
+                Console.WriteLine(Text.ToLower());
             }
 
             Console.WriteLine();
@@ -118,10 +111,13 @@ namespace HomeWork_Strings
             Console.WriteLine("Enter the string:");
             string? Text2 = Console.ReadLine();
 
-            if (Text2 != null)
+            if (Text2 != null && Text2.Length >= 5)
             {
-                SymbolsofSubstr(Text2);
+                
+                Console.WriteLine(GetFirstFiveChars(Text2));
+                
             }
+            else Console.WriteLine("The entered string is less than 5 characters.");
 
             Console.WriteLine();
 
@@ -131,9 +127,9 @@ namespace HomeWork_Strings
             Console.WriteLine("Task5");
             Console.Write("Enter the number of strings: ");
             int number = Convert.ToInt32(Console.ReadLine());
-
-            strs = new string[number];
-
+            
+            string[] strs = new string[number];
+            
             for (int i = 0; i < number; i++)
             {
                 Console.Write("Enter the string №{0}: ", i + 1);
@@ -142,7 +138,7 @@ namespace HomeWork_Strings
 
             Console.WriteLine();
 
-            SentenceBuilder(strs);
+            Console.WriteLine(SentenceBuilder(strs));
 
             Console.WriteLine();
 
@@ -158,7 +154,9 @@ namespace HomeWork_Strings
 
             if (Str1 != null && Str2 != null && Str3 != null)
             {
-                ChangeWord(Str1, Str2, Str3);
+                
+                Console.WriteLine(ReplaceWords(Str1, Str2, Str3));
+            
             }
 
         }
