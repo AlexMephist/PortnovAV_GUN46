@@ -13,12 +13,21 @@ namespace GamePrototype.Units
         {            
         }
 
-        public override uint GetUnitDamage()
+        
+        public override uint GetUnitDamage() // получает юнит урон
         {
-            if (_equipment.TryGetValue(EquipSlot.Weapon, out var item) && item is Weapon weapon) 
+            if (_equipment.TryGetValue(EquipSlot.Weapon, out var item) && item is Weapon weapon)
             {
+                
                 return BaseDamage + weapon.Damage;
+                
             }
+
+            if (_equipment.TryGetValue(EquipSlot.RangeWeapon, out _) && item is RangeWeapon weapon2)
+            {
+                return BaseDamage + weapon2.Damage;
+            }
+
             return BaseDamage;
         }
 
@@ -30,7 +39,7 @@ namespace GamePrototype.Units
                 if (items[i] is EconomicItem economicItem) 
                 {
                     UseEconomicItem(economicItem);
-                    Inventory.TryRemove(items[i]);
+                    
                 }
             }
         }
@@ -51,6 +60,12 @@ namespace GamePrototype.Units
             {
                 Health += healthPotion.HealthRestore;
             }
+            if (economicItem is Grindstone grindstone)
+            {
+                
+                Inventory.TryRemove(grindstone);    // удаляем из инвентаря точильный камень
+                Console.WriteLine("Grindstone was used");
+            }
         }
 
         protected override uint CalculateAppliedDamage(uint damage)
@@ -59,9 +74,16 @@ namespace GamePrototype.Units
             {
                 damage -= (uint)(damage * (armour.Defence / 100f));
             }
+
+            if (_equipment.TryGetValue(EquipSlot.Helmet, out _) && item is Helmet armour2)
+            {
+                damage -= (uint)(damage * (armour2.Defence / 100f));
+            }
+
             return damage;
         }
 
+        
         public override string ToString()
         {
             var builder = new StringBuilder();

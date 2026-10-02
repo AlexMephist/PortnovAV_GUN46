@@ -1,10 +1,15 @@
-﻿using GamePrototype.Units;
+﻿using GamePrototype.Items.EconomicItems;
+using GamePrototype.Items.EquipItems;
+using GamePrototype.Units;
 
 namespace GamePrototype.Combat
 {
+ 
     public sealed class CombatManager
     {
         private readonly Random _random = new();
+        
+        private readonly EquipItem _equipItem;
         
         public Unit StartCombat(Unit player, Unit enemy) => PlayCombatRoutine(player, enemy);
 
@@ -15,7 +20,7 @@ namespace GamePrototype.Combat
             {
                 if (Enum.TryParse<RockPaperScissors>(Console.ReadLine(), out var rockPaperScissors)) 
                 {
-                    HandleCombatInput(player, enemy, rockPaperScissors);
+                    HandleCombatInput(player, enemy, rockPaperScissors, _equipItem);
                 }
                 else
                 {
@@ -24,7 +29,11 @@ namespace GamePrototype.Combat
             }
             if (player.Health > 0 && enemy.Health == 0) 
             {
+
+                player.HandleCombatComplete();
+
                 return player;
+            
             }
             else if (player.Health == 0 && enemy.Health > 0) 
             {
@@ -38,7 +47,7 @@ namespace GamePrototype.Combat
             $"or {RockPaperScissors.Paper} = {(int)RockPaperScissors.Paper}" +
             $"or {RockPaperScissors.Scissors} = {(int)RockPaperScissors.Scissors}";
 
-        private void HandleCombatInput(Unit player, Unit enemy, RockPaperScissors rockPaperScissors)
+        private void HandleCombatInput(Unit player, Unit enemy, RockPaperScissors rockPaperScissors, EquipItem _equipItem)
         {
             var enemyInput = (RockPaperScissors) _random.Next(1, 3);
             Console.WriteLine($"Result player = {rockPaperScissors} and enemy = {enemyInput}");
@@ -74,6 +83,7 @@ namespace GamePrototype.Combat
         {
             defender.ApplyDamage(attacker.GetUnitDamage());
             Console.WriteLine($"{attacker.Name} hits {defender.Name}. {defender.Name} health {defender.Health}/{defender.MaxHealth}");
+           // Console.WriteLine(_equipItem.Durability);
             if (defender.Health == 0) 
             {
                 Console.WriteLine($"{defender.Name} is dead!");

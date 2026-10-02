@@ -3,6 +3,8 @@
     public enum EquipSlot
     {
         Weapon,
-        Armour
+        Armour,
+        RangeWeapon, // дальноб. оружие
+        Helmet       // шлем
     }
 }

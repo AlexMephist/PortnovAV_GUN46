@@ -23,10 +23,11 @@ namespace GamePrototype.Game
         private void Initialize()
         {
             Console.WriteLine("Welcome, player!");
-            _dungeon = DungeonBuilder.BuildDungeon();
+            _dungeon = DungeonBuilder2.BuildDungeon();
             Console.WriteLine("Enter your name");
-            _player = UnitFactoryDemo.CreatePlayer(Console.ReadLine());
+            _player = UnitFactory.CreatePlayer(Console.ReadLine());
             Console.WriteLine($"Hello {_player.Name}");
+            
         }
 
         private void StartGameLoop()
