@@ -3,7 +3,7 @@ using GamePrototype.Units;
 
 namespace GamePrototype.Dungeon
 {
-    public sealed class DungeonRoom
+    public class DungeonRoom
     {      
         public readonly string Name;
         public readonly Unit Enemy;

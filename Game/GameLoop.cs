@@ -1,7 +1,10 @@
 ﻿using GamePrototype.Combat;
 using GamePrototype.Dungeon;
+using GamePrototype.Items.EconomicItems;
+using GamePrototype.Items.EquipItems;
 using GamePrototype.Units;
 using GamePrototype.Utils;
+using System.Numerics;
 
 namespace GamePrototype.Game
 {
@@ -22,12 +25,41 @@ namespace GamePrototype.Game
 
         private void Initialize()
         {
-            Console.WriteLine("Welcome, player!");
-            _dungeon = DungeonBuilder2.BuildDungeon();
-            Console.WriteLine("Enter your name");
-            _player = UnitFactory.CreatePlayer(Console.ReadLine());
-            Console.WriteLine($"Hello {_player.Name}");
             
+            Console.WriteLine("Welcome, player!");
+            Console.WriteLine("Choose difficulty: 0 - Easy, 1 - Hard");
+
+            if (Enum.TryParse<LevelSelection>(Console.ReadLine(), out var levelSelection))
+            {
+                switch (levelSelection)
+                {
+
+                    case LevelSelection.Easy:
+
+                        EasyDungeonBuilder easyDungeonBuilder = new();
+                        _dungeon = easyDungeonBuilder.BuildDungeon();
+                        Console.WriteLine("Enter your name");
+                        EasyUnitFactory unitFactory = new();
+                        _player = unitFactory.CreatePlayer(Console.ReadLine());
+                        Console.WriteLine($"Hello {_player.Name}");
+                        
+                        return;
+
+                    case LevelSelection.Hard:
+
+                        HardDungeonBuilder hardDungeonBuilder = new();
+                        _dungeon = hardDungeonBuilder.BuildDungeon();
+                        Console.WriteLine("Enter your name");
+                        HardUnitFactory unitFactory2 = new();
+                        _player = unitFactory2.CreatePlayer(Console.ReadLine());
+                        Console.WriteLine($"Hello {_player.Name}");
+                        
+                        return;
+
+                }
+            }
+            
+                  
         }
 
         private void StartGameLoop()
@@ -72,7 +104,7 @@ namespace GamePrototype.Game
             {
                 if (_combatManager.StartCombat(_player, currentRoom.Enemy) == _player)
                 {
-                    _player.HandleCombatComplete();
+                    
                     LootEnemy(currentRoom.Enemy);
                 }
                 else 

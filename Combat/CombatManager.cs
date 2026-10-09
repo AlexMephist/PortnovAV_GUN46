@@ -1,6 +1,4 @@
-﻿using GamePrototype.Items.EconomicItems;
-using GamePrototype.Items.EquipItems;
-using GamePrototype.Units;
+﻿using GamePrototype.Units;
 
 namespace GamePrototype.Combat
 {
@@ -9,8 +7,7 @@ namespace GamePrototype.Combat
     {
         private readonly Random _random = new();
         
-        private readonly EquipItem _equipItem;
-        
+              
         public Unit StartCombat(Unit player, Unit enemy) => PlayCombatRoutine(player, enemy);
 
         private Unit PlayCombatRoutine(Unit player, Unit enemy)
@@ -20,7 +17,7 @@ namespace GamePrototype.Combat
             {
                 if (Enum.TryParse<RockPaperScissors>(Console.ReadLine(), out var rockPaperScissors)) 
                 {
-                    HandleCombatInput(player, enemy, rockPaperScissors, _equipItem);
+                    HandleCombatInput(player, enemy, rockPaperScissors);
                 }
                 else
                 {
@@ -29,8 +26,6 @@ namespace GamePrototype.Combat
             }
             if (player.Health > 0 && enemy.Health == 0) 
             {
-
-                player.HandleCombatComplete();
 
                 return player;
             
@@ -47,7 +42,7 @@ namespace GamePrototype.Combat
             $"or {RockPaperScissors.Paper} = {(int)RockPaperScissors.Paper}" +
             $"or {RockPaperScissors.Scissors} = {(int)RockPaperScissors.Scissors}";
 
-        private void HandleCombatInput(Unit player, Unit enemy, RockPaperScissors rockPaperScissors, EquipItem _equipItem)
+        private void HandleCombatInput(Unit player, Unit enemy, RockPaperScissors rockPaperScissors)
         {
             var enemyInput = (RockPaperScissors) _random.Next(1, 3);
             Console.WriteLine($"Result player = {rockPaperScissors} and enemy = {enemyInput}");
