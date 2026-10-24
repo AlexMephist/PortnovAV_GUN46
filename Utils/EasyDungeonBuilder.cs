@@ -9,7 +9,7 @@ namespace GamePrototype.Utils
     
     {
         
-        public DungeonRoom BuildDungeon()
+        public override DungeonRoom BuildDungeon()
         {
             var enter = new DungeonRoom("Enter");
             var monsterRoom = new DungeonRoom("Monster", new Goblin(GameConstants.Goblin, 18, 18, 2));

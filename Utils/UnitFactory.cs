@@ -4,18 +4,10 @@ namespace GamePrototype.Utils
 {
     public abstract class UnitFactory
     {
+
+        public abstract Unit CreatePlayer(string name);
         
-        private Unit player;
+        public abstract Unit CreateGoblinEnemy();
 
-
-        public Unit CreatePlayer(string name)
-        {
-
-            
-            return player;
-
-        }
-
-        
     }
 }

@@ -9,7 +9,7 @@ namespace GamePrototype.Utils
 
     {
 
-        public DungeonRoom BuildDungeon()
+        public override DungeonRoom BuildDungeon()
         {
             var enter = new DungeonRoom("Enter");
             var monsterRoom = new DungeonRoom("Monster", new Goblin(GameConstants.Goblin, 18, 18, 4));
@@ -29,12 +29,9 @@ namespace GamePrototype.Utils
 
             lootStoneRoom.TrySetDirection(Direction.Right, monsterRoom);
             lootStoneRoom.TrySetDirection(Direction.Left, emptyRoom);
-
-            monsterRoom.TrySetDirection(Direction.Left, emptyRoom);
-            emptyRoom.TrySetDirection(Direction.Forward, finalRoom);
+            lootStoneRoom.TrySetDirection(Direction.Forward, finalRoom);
 
             lootRoom.TrySetDirection(Direction.Forward, finalRoom);
-            lootStoneRoom.TrySetDirection(Direction.Forward, finalRoom);
 
             return enter;
         }

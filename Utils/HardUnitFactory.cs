@@ -7,7 +7,7 @@ namespace GamePrototype.Utils
 {
     public class HardUnitFactory : UnitFactory
     {
-        public Unit CreatePlayer(string name)
+        public override Unit CreatePlayer(string name)
         {
             var player = new Player(name, 20, 20, 4);
 
@@ -20,7 +20,7 @@ namespace GamePrototype.Utils
             return player;
         }
 
-        public Unit CreateGoblinEnemy() => new Goblin(GameConstants.Goblin, 18, 18, 4);
+        public override Unit CreateGoblinEnemy() => new Goblin(GameConstants.Goblin, 18, 18, 4);
 
     }
     

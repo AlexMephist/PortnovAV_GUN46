@@ -27,39 +27,54 @@ namespace GamePrototype.Game
         {
             
             Console.WriteLine("Welcome, player!");
-            Console.WriteLine("Choose difficulty: 0 - Easy, 1 - Hard");
+            LevelSelection levelSelection;
 
-            if (Enum.TryParse<LevelSelection>(Console.ReadLine(), out var levelSelection))
+            while (true)
             {
-                switch (levelSelection)
+                Console.WriteLine("Choose difficulty: 0 - Easy, 1 - Hard");
+                string? input = Console.ReadLine();
+
+                if (Enum.TryParse<LevelSelection>(input, out var choice) && Enum.IsDefined(typeof(LevelSelection), choice))
                 {
-
-                    case LevelSelection.Easy:
-
-                        EasyDungeonBuilder easyDungeonBuilder = new();
-                        _dungeon = easyDungeonBuilder.BuildDungeon();
-                        Console.WriteLine("Enter your name");
-                        EasyUnitFactory unitFactory = new();
-                        _player = unitFactory.CreatePlayer(Console.ReadLine());
-                        Console.WriteLine($"Hello {_player.Name}");
-                        
-                        return;
-
-                    case LevelSelection.Hard:
-
-                        HardDungeonBuilder hardDungeonBuilder = new();
-                        _dungeon = hardDungeonBuilder.BuildDungeon();
-                        Console.WriteLine("Enter your name");
-                        HardUnitFactory unitFactory2 = new();
-                        _player = unitFactory2.CreatePlayer(Console.ReadLine());
-                        Console.WriteLine($"Hello {_player.Name}");
-                        
-                        return;
-
+                    levelSelection = choice;
+                    break;
                 }
+
+                Console.WriteLine("Invalid choice. Please enter 0 or 1.");
+            }
+
+            DungeonBuilder2 dungeonBuilder;
+            UnitFactory unitFactory;
+
+            switch (levelSelection)
+            {
+                case LevelSelection.Easy:
+                    dungeonBuilder = new EasyDungeonBuilder();
+                    unitFactory = new EasyUnitFactory();
+                    break;
+                case LevelSelection.Hard:
+                    dungeonBuilder = new HardDungeonBuilder();
+                    unitFactory = new HardUnitFactory();
+                    break;
+                default:
+                    dungeonBuilder = new EasyDungeonBuilder();
+                    unitFactory = new EasyUnitFactory();
+                    break;
+            }
+
+            _dungeon = dungeonBuilder.BuildDungeon();
+
+            Console.WriteLine("Enter your name:");
+            string name = Console.ReadLine() ?? "";
+            if (string.IsNullOrEmpty(name))
+            {
+                name = "Hero"; 
             }
             
-                  
+            _player = unitFactory.CreatePlayer(name);
+            
+            Console.WriteLine($"Hello, {_player.Name}! Difficulty: {levelSelection}");
+         
         }
 
         private void StartGameLoop()

@@ -10,11 +10,12 @@ namespace GamePrototype.Units
         protected uint BaseDamage; 
         protected Inventory Inventory; // инвентарь
         
+
         public string Name { get; private set; }
         public uint Health
         {
             get => _health;
-            protected set => _health = value;
+            protected set => _health = value; // Math.Max(0, value);
         }
 
         public uint MaxHealth => _maxHealth;
@@ -31,15 +32,29 @@ namespace GamePrototype.Units
         public void ApplyDamage(uint damage) // нанести урон
         {
             var damageApplied = CalculateAppliedDamage(damage);
-            if (_health < damageApplied || (_health - damageApplied) <= 0) 
+
+            ////if (_health < damageApplied || (_health - damageApplied) <= 0) 
+            //if (_health >= damageApplied)
+            //{
+            //    //_health = 0;
+            //    _health -= damageApplied;
+            //}
+            //else 
+            //{
+            //    //_health -= damageApplied;
+            //    _health = 0;
+            //}
+
+            // ПРОВЕРКА ПЕРЕД ВЫЧИТАНИЕМ — это спасает от переполнения
+            if (damageApplied >= _health)
             {
-                _health = 0;
+                _health = 0; // Гарантированно 0
             }
-            else 
+            else
             {
-                _health -= damageApplied;
+                _health -= damageApplied; // Тут безопасно, так как _health > damageApplied
             }
-            
+
             DamageReceiveHandler();
         }
 

@@ -12,30 +12,54 @@ namespace GamePrototype.Combat
 
         private Unit PlayCombatRoutine(Unit player, Unit enemy)
         {
-            Console.WriteLine(GetCombatString());
-            while (player.Health > 0 && enemy.Health > 0) 
+
+            if (player is Player p)
             {
-                if (Enum.TryParse<RockPaperScissors>(Console.ReadLine(), out var rockPaperScissors)) 
+                var randomMode = (AttackMode)_random.Next(0, 2); // 0 = Melee, 1 = Ranged
+                p.SetAttackMode(randomMode);
+                Console.WriteLine($"[TIP] {p.Name} is currently in {randomMode} mode! Press 'S' to switch attack style.");
+            }
+
+            Console.WriteLine(GetCombatString());
+            
+            while (player.Health > 0 && enemy.Health > 0)
+            {
+                string? input = Console.ReadLine()?.Trim();
+
+                if (input == "S" || input == "s")
+                {
+                    if (player is Player pl)
+                    {
+                        pl.ToggleAttackMode();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Only Player can switch attack mode.");
+                    }
+                    continue; 
+                }
+                
+                if (Enum.TryParse<RockPaperScissors>(input, out var rockPaperScissors))
                 {
                     HandleCombatInput(player, enemy, rockPaperScissors);
                 }
                 else
                 {
-                    Console.WriteLine(GetCombatString());
+                    // Console.WriteLine(GetCombatString());
                 }
             }
-            if (player.Health > 0 && enemy.Health == 0) 
-            {
 
+            if (player.Health > 0 && enemy.Health == 0)
+            {
                 return player;
-            
             }
-            else if (player.Health == 0 && enemy.Health > 0) 
+            else if (player.Health == 0 && enemy.Health > 0)
             {
                 return enemy;
             }
 
             return null;
+
         }
 
         private string GetCombatString() => $"Type {RockPaperScissors.Rock} = {(int)RockPaperScissors.Rock}" +
@@ -44,7 +68,7 @@ namespace GamePrototype.Combat
 
         private void HandleCombatInput(Unit player, Unit enemy, RockPaperScissors rockPaperScissors)
         {
-            var enemyInput = (RockPaperScissors) _random.Next(1, 3);
+            var enemyInput = (RockPaperScissors) _random.Next(1, 4);
             Console.WriteLine($"Result player = {rockPaperScissors} and enemy = {enemyInput}");
             switch (rockPaperScissors) 
             {
@@ -76,9 +100,11 @@ namespace GamePrototype.Combat
 
         private void ApplyDamage(Unit attacker, Unit defender)
         {
+            
             defender.ApplyDamage(attacker.GetUnitDamage());
+            
             Console.WriteLine($"{attacker.Name} hits {defender.Name}. {defender.Name} health {defender.Health}/{defender.MaxHealth}");
-           // Console.WriteLine(_equipItem.Durability);
+           
             if (defender.Health == 0) 
             {
                 Console.WriteLine($"{defender.Name} is dead!");

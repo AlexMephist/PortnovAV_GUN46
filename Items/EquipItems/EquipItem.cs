@@ -13,15 +13,33 @@ namespace GamePrototype.Items.EquipItems
 
         public abstract EquipSlot Slot { get; }
 
-        protected EquipItem(uint maxDurability, string name) : base(name) => _durability = maxDurability;
+        protected EquipItem(uint durability, string name) : base(name)
+        {
+            _maxDurability = durability;
+            _durability = durability;
+        }
 
-        public void ReduceDurability(uint _delta) => _durability = _delta >= _durability
-            ? 0: _durability - _delta;
+        public void ReduceDurability(uint delta)
+        {
+            if (delta >= _durability)
+                _durability = 0;
+            
+            else
+                _durability -= delta;
+        }
+        public void Repair(uint delta)
+        {
+            if (delta == 0)
+                return;
 
-        public void Repair(uint delta) => 
-            _durability = _durability + delta > _maxDurability 
-            ? _maxDurability 
-            : _durability + delta;
-        
+            if (_durability + delta >= _maxDurability)
+            {
+                _durability = _maxDurability;
+            }
+            else
+            {
+                _durability += delta;
+            }
+        }
     }
 }

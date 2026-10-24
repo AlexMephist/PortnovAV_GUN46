@@ -7,7 +7,7 @@ namespace GamePrototype.Utils
 {
     public class EasyUnitFactory : UnitFactory
     {
-        public Unit CreatePlayer(string name)
+        public override Unit CreatePlayer(string name)
         {
             var player = new Player(name, 30, 30, 6);
                 
@@ -20,7 +20,7 @@ namespace GamePrototype.Utils
             return player;
         }
 
-        public Unit CreateGoblinEnemy() => new Goblin(GameConstants.Goblin, 10, 10, 2);
+        public override Unit CreateGoblinEnemy() => new Goblin(GameConstants.Goblin, 10, 10, 2);
 
     }
 }
