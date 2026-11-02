@@ -19,7 +19,8 @@ namespace DefaultNamespace
         [Range(0.2f, 1.0f)]
         private float _delay = 0.5f;
 
-        [Range(0.2f, float.MaxValue)]
+        [SerializeField]
+        [Min(0.2f)]
         private float _duration = 5f;
 
 		private void Start()

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 
 namespace DefaultNamespace
 {
@@ -15,12 +15,16 @@ namespace DefaultNamespace
 			public float Time;
 		}
 
-		[SerializeField]
+#if UNITY_EDITOR
+		[Tooltip("JSON-file with data of trajectory")]
+        [ReadOnly]
+#endif
+        [SerializeField]
 		private TextAsset _json;
 
-		[SerializeField]
-		[HideInInspector]
-		public List<Data> Records { get; private set; }
+		[field: SerializeField]
+		[field: HideInInspector]
+		public List<Data> Records { get; private set; } = new();
 
 		private void Awake()
 		{
@@ -116,18 +120,18 @@ namespace DefaultNamespace
 		{			
 			//todo logic...
 			if (_json != null)
-				{
+			{
 				string json = JsonUtility.ToJson(this, true);
-            
-				string relativePath = AssetDatabase.GetAssetPath(_json);
-				string absolutePath = Path.Combine(Application.dataPath, relativePath);
-            
-				File.WriteAllText(absolutePath, json);
-            
-				AssetDatabase.Refresh();
-            
-				Debug.Log("The trajectory is saved in: " + _json.name, this);
-        }
+
+				// GetAssetPath уже возвращает путь, начинающийся с "Assets/", 
+				// поэтому Application.dataPath сюда добавлять не надо — иначе получится Assets/Assets/...
+				string path = UnityEditor.AssetDatabase.GetAssetPath(_json);
+
+				File.WriteAllText(path, json);
+				UnityEditor.AssetDatabase.Refresh();
+
+				Debug.Log("The trajectory is saved in: " + path, this);
+			}
 		}
 #endif
     }
