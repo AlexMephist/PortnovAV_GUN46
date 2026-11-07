@@ -21,7 +21,7 @@ namespace Netologia.Homework
 		private void Update()
 		{
 			if (!_ready) return;
-			if (Input.GetKey(KeyCode.Space))
+			if (Input.GetKeyDown(KeyCode.Space))
 			{
 				StartCoroutine(Reloader());
 				_ball.isKinematic = false;
@@ -42,7 +42,16 @@ namespace Netologia.Homework
 		{
 			_ball = Instantiate(_ballPrefab, transform);
 			_ball.isKinematic = true;
-			_ready = true;
+
+            var parentScale = transform.lossyScale;
+            _ball.transform.localScale = new Vector3(
+                1f / parentScale.x,
+                1f / parentScale.y,
+                1f / parentScale.z);
+
+            _ball.transform.localPosition = new Vector3(0f, 0f, 0.9f);
+
+            _ready = true;
 		}
 
 		private void Start()

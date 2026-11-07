@@ -3,32 +3,54 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-	[SerializeField]
-	private float _moveTime = 1f;
-	[SerializeField]
-	private float _delayTime = 2f;
-	[SerializeField]
-	private Vector3[] _positions;
+    [SerializeField]
+    private Vector3 _start;
+    [SerializeField]
+    private Vector3 _end;
+    [SerializeField, Min(0.1f)]
+    private float _speed = 1f;
+    [SerializeField, Min(0f)]
+    private float _delay = 1f;
 
-	private IEnumerator Start()
+    private IEnumerator Start()
     {
-		if(_positions.Length < 2) yield break;
-		int prev = 0, curr = 1;
-		var time = 0f;
-		var transform = this.transform;
-		while(true)
-		{
-			transform.position = Vector3.Lerp(_positions[prev], _positions[curr], time / _moveTime);
-			time += Time.deltaTime;
-			if(time >= _moveTime)
-			{
-				time = 0f;
-				prev = curr;
-				curr = (curr + 1) % _positions.Length;
-				yield return new WaitForSeconds(_delayTime);
-			}
+        var body = GetComponent<Rigidbody>();
+        var parent = transform.parent;
+        
+        var from = parent != null ? parent.TransformPoint(_start) : _start;
+        var to = parent != null ? parent.TransformPoint(_end) : _end;
 
-			yield return null;
-		}
-	}
+        while (true)
+        {
+            yield return Move(body, from, to);
+            yield return Move(body, to, from);
+        }
+    }
+
+    private IEnumerator Move(Rigidbody body, Vector3 from, Vector3 to)
+    {
+        var duration = Vector3.Distance(from, to) / _speed;
+        var time = 0f;
+
+        while (time < duration)
+        {
+            yield return new WaitForFixedUpdate();
+            time += Time.fixedDeltaTime;
+            body.MovePosition(Vector3.Lerp(from, to, Mathf.Clamp01(time / duration)));
+        }
+
+        yield return new WaitForSeconds(_delay);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        var parent = transform.parent;
+        var from = parent != null ? parent.TransformPoint(_start) : _start;
+        var to = parent != null ? parent.TransformPoint(_end) : _end;
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(from, to);
+        Gizmos.DrawSphere(from, 0.1f);
+        Gizmos.DrawSphere(to, 0.1f);
+    }
 }
